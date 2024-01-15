@@ -1,19 +1,16 @@
 ---
-import Footer from "@/components/Footer.astro"
-import HeroContainer from "@/components/HeroContainer.astro"
 import Layout from "@/layouts/Layout.astro"
 
+import HeroContainer from "@/components/HeroContainer.astro"
+import InfoKitPrensa from "@/components/InfoKitPrensa.astro"
+
 import { getI18N } from "@/i18n"
-import InfoKitPrensa from "../InfoKitPrensa.astro"
 
 const { currentLocale } = Astro
 const i18n = getI18N({ currentLocale })
 ---
 
-<Layout
-  title="Acerca de los premios ESLAND"
-  description="Los Premios ESLAND son una iniciativa privada promovida por el célebre streamer TheGrefg y buscan apoyar y reconocer la creación de contenido en el ámbito hispanohablante."
->
+<Layout title={i18n.SEO.INFO_TITLE} description={i18n.SEO.INFO_DESCRIPTION}>
   <HeroContainer img="/info-background.webp">
     <h1
       class="lg:text-6xl text-5xl text-center uppercase font-tomaso tracking tracking-widest"
@@ -21,11 +18,11 @@ const i18n = getI18N({ currentLocale })
       {i18n.INFO_TITLE}
     </h1>
   </HeroContainer>
-  <main>
+  <main class="pb-24">
     <section
       class="w-full max-w-[1400px] mx-auto my-24 gap-10 text-pretty px-6 text-left text-xl sm:px-20 flex flex-col md:flex-row items-center justify-between p-6 md:p-8"
     >
-      <div class="md:w-1/2 space-y-4">
+      <div id="theater-text" class="md:w-1/2 space-y-4">
         <h1
           class="mx-auto mb-10 text-balance text-left text-3xl lg:text-5xl font-semibold tracking-wide"
         >
@@ -34,7 +31,7 @@ const i18n = getI18N({ currentLocale })
         <p>{i18n.INFO_CONTENT_1_1}</p>
         <p>{i18n.INFO_CONTENT_1_2}</p>
       </div>
-      <div class="mt-6 md:mt-0 md:w-1/2">
+      <div id="theater" class="mt-6 md:mt-0 md:w-1/2">
         <img
           class="object-cover w-full h-full rounded-md"
           height={500}
@@ -51,7 +48,7 @@ const i18n = getI18N({ currentLocale })
     <section
       class="w-full max-w-[1400px] mx-auto my-24 gap-10 text-pretty px-6 text-left text-xl sm:px-20 flex flex-col md:flex-row items-center justify-between p-6 md:p-8"
     >
-      <div class="mt-6 md:mt-0 md:w-1/2">
+      <div id="trophies" class="mt-6 md:mt-0 md:w-1/2">
         <img
           class="object-cover w-full h-full rounded-md"
           height={556}
@@ -63,7 +60,7 @@ const i18n = getI18N({ currentLocale })
           width={812}
         />
       </div>
-      <div class="md:w-1/2 space-y-4">
+      <div id="trophies-text" class="md:w-1/2 space-y-4">
         <h1
           class="mx-auto mb-10 text-balance text-left text-3xl lg:text-5xl font-semibold tracking-wide"
         >
@@ -74,6 +71,58 @@ const i18n = getI18N({ currentLocale })
       </div>
     </section>
     <InfoKitPrensa />
-    <Footer />
   </main>
 </Layout>
+
+<style>
+  #theater,
+  #trophies-text h1,
+  #trophies-text p {
+    animation: cover-animation linear both;
+    animation-timeline: view();
+  }
+  #theater-text h1,
+  #theater-text p,
+  #trophies {
+    animation: entry-animation linear both;
+    animation-timeline: view();
+  }
+  #theater {
+    animation-range: entry 10% cover 40%;
+  }
+  #theater-text h1 {
+    animation-range: entry 10% cover 30%;
+  }
+  #theater-text p {
+    animation-range: entry 10% cover 20%;
+  }
+  #trophies {
+    animation-range: entry 30% cover 50%;
+  }
+  #trophies-text h1 {
+    animation-range: entry 30% cover 40%;
+  }
+  #trophies-text p {
+    animation-range: entry 20% cover 30%;
+  }
+  @keyframes entry-animation {
+    0% {
+      opacity: 0;
+      translate: -100px 0;
+    }
+    100% {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+  @keyframes cover-animation {
+    0% {
+      opacity: 0;
+      translate: 100px 0;
+    }
+    100% {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+</style>

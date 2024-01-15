@@ -1,82 +1,160 @@
 ---
 import Layout from "@/layouts/Layout.astro"
-import VoteTitle from "../VoteTitle.astro"
-import HeroContainer from "../HeroContainer.astro"
+import SortVoteIcon from "@/components/icons/SortVote.astro"
+import CheckPencilIcon from "@/components/icons/CheckPencil.astro"
+import PodiumIcon from "@/components/icons/Podium.astro"
+import TapButtonIcon from "@/components/icons/TapButton.astro"
+import ShareIcon from "@/components/icons/Share.astro"
+import ThinkBrainIcon from "@/components/icons/ThinkBrain.astro"
+import { VoteSystem } from "@/components/VoteSystem.tsx"
+
+import Button from "@/components/Button.astro"
+import { getSession } from "auth-astro/server"
+
+const session = await getSession(Astro.request)
+
+const bkg = session ? "vote-system-bkg.webp" : "vota-bkg.webp"
 ---
 
 <Layout title="Votar" description="Votar">
-  <h1>En construcción</h1>
+  <section
+    class="bg-no-repeat bg-cover relative pb-24 min-h-screen w-full max-w-[100vw]"
+  >
+    <img
+      class="absolute h-full w-full animate-fade object-cover object-center animate-duration-1000 animate-ease-in-out -z-10"
+      src={`/${bkg}`}
+      alt="ESLAND cover"
+    />
 
-  <main class="w-full max-w-[100vw] relative pt-48">
-    <VoteTitle>
-      <span>Mejor</span>
-      <span>Serie de</span>
-      <span>Contenido</span>
-    </VoteTitle>
+    {
+      !session && (
+        <div class="mx-auto flex flex-col max-w-7xl px-6 pt-40">
+          <h1 class="uppercase mb-10 text-left text-3xl lg:text-5xl font-bold tracking-wider leading-loose max-w-xl text-balance">
+            Las votaciones ya están aquí
+          </h1>
 
-    <VoteTitle>
-      <span>Streamer</span>
-      <span>Revelación</span>
-      <span>del Año</span>
-    </VoteTitle>
+          <div class="mb-10">
+            <Button id="vote-button" url="#">
+              ¡Empezar con las votaciones!
+            </Button>
+          </div>
+          <p class="max-w-3xl text-pretty text-2xl px-2 mb-10">
+            Ha llegado el momento más importante.{" "}
+            <strong>Votar en la 3ª Edición de los Premios ESLAND</strong>. Para
+            que tus votos se contabilicen de forma correcta, te dejamos algunos
+            consejos:
+          </p>
 
-    <VoteTitle>
-      <span>Evento</span>
-      <span>Del Año</span>
-    </VoteTitle>
+          <ul class="flex flex-col gap-y-10 text-2xl pl-4 font-extralight">
+            <li class="flex gap-x-6 items-center">
+              <SortVoteIcon />
+              <span>
+                Vota, <strong>por orden de preferencia</strong>, hasta 4
+                nominados por categoría.
+              </span>
+            </li>
 
-    <VoteTitle>
-      <span>Mejor</span>
-      <span>Miniserie de</span>
-      <span>Contenido</span>
-    </VoteTitle>
+            <li class="flex gap-x-6 items-center">
+              <CheckPencilIcon />
+              <span>
+                <strong>No es obligatorio votar en cada categoría.</strong>
+              </span>
+            </li>
 
-    <VoteTitle>
-      <span>Streamer</span>
-      <span>Promesa</span>
-      <span>del Año</span>
-    </VoteTitle>
+            <li class="flex gap-x-6 items-center">
+              <PodiumIcon />
+              <span>
+                No es obligatorio pero sí recomendable el
+                <strong>uso del voto rankeado</strong>.
+              </span>
+            </li>
 
-    <VoteTitle>
-      <span>Roleplayer</span>
-      <span>del Año</span>
-    </VoteTitle>
+            <li class="flex gap-x-6 items-center">
+              <>
+                <TapButtonIcon />
+                <span>
+                  Una vez tengas clara tu elección,{" "}
+                  <strong>asegúrate de pulsar “enviar mis votos”.</strong>
+                </span>
+              </>
+            </li>
 
-    <VoteTitle>
-      <span>Mejor</span>
-      <span>Cobertura</span>
-      <span>Informativa</span>
-    </VoteTitle>
+            <li class="flex gap-x-6 items-center">
+              <>
+                <ShareIcon />
+                <span>
+                  <strong>Recuerda compartir tus votos</strong> en redes
+                  sociales.
+                </span>
+              </>
+            </li>
 
-    <VoteTitle>
-      <span>Mejor</span>
-      <span>Variety</span>
-      <span>Streamer</span>
-    </VoteTitle>
+            <li class="flex gap-x-6 items-center">
+              <ThinkBrainIcon />
+              <span>
+                Elige sabiamente y <strong>revisa tus votos</strong>, solo
+                tienes una oportunidad.
+              </span>
+            </li>
+            <span class="opacity-85 text-base mt-4">
+              Las votaciones estarán abiertas hasta el domingo 14 de enero a las
+              24:00h (hora española)
+            </span>
+          </ul>
+        </div>
+      )
+    }
 
-    <a
-      href="https://twitter.com/PremiosESLAND/status/1744081978951925926"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="font-tomaso block text-center text-white/80 text-xs uppercase mt-8 mb-4 tracking-wide hover:text-yellow-300 transition"
-      >Ver criterios utilizados para seleccionar a los 10 nominados para la
-      categoría STREAMER DEL AÑO.</a
-    >
-
-    <VoteTitle>
-      <span>Streamer</span>
-      <span>IRL</span>
-      <span>del Año</span>
-    </VoteTitle>
-
-    <VoteTitle>
-      <span>Enfado</span>
-      <span>del Año</span>
-    </VoteTitle>
-
-    <VoteTitle>
-      <span>Clip</span>
-      <span>del Año</span>
-    </VoteTitle>
-  </main>
+    {
+      session && (
+        <div class="mx-auto flex flex-col max-w-7xl pt-20 relative">
+          <VoteSystem client:load>
+            <div class="flex items-center gap-4">
+              <img
+                class="w-12 h-12 rounded-full"
+                src={session.user?.image}
+                alt=""
+              />
+              <div class="text-yellow-300">
+                <h4 class="font-bold text-xl">{session.user?.name}</h4>
+                <button
+                  id="logout-button"
+                  class="text-sm hover:border-white border-b font-light border-transparent text-white flex justify-center items-center gap-x-2"
+                >
+                  <span>Cerrar sesión</span>
+                </button>
+              </div>
+            </div>
+          </VoteSystem>
+        </div>
+      )
+    }
+  </section>
 </Layout>
+
+<script>
+  const { signIn, signOut } = await import("auth-astro/client")
+  // pongo un $ delante para que se vea que es un elemento del DOM
+  // es una cosa que se hacía en el paso con jQuery y es una manía
+  // que se me ha quedado porque me gusta :)
+  const $loginButton = document.querySelector("#vote-button")
+  const $logoutButton = document.querySelector("#logout-button")
+
+  $loginButton?.addEventListener("click", async (event) => {
+    event.preventDefault()
+    await signIn("twitch")
+  })
+
+  $logoutButton?.addEventListener("click", async (event) => {
+    event.preventDefault()
+    await signOut()
+  })
+</script>
+
+<style>
+  p {
+    text-shadow:
+      0 0 5px rgba(0, 0, 0, 0.3),
+      0 0 10px rgba(0, 0, 0, 0.7);
+  }
+</style>

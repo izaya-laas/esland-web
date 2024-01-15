@@ -1,31 +1,41 @@
 ---
 import Layout from "@/layouts/Layout.astro"
+
 import HeroContainer from "@/components/HeroContainer.astro"
-import Button from "../Button.astro"
+import Button from "@/components/Button.astro"
+import Palmares from "@/components/Palmares.astro"
+import Numeros from "@/components/Numeros.astro"
+import Galeria from "@/components/Galeria.astro"
 
 import { getI18N } from "@/i18n"
-import Numeros from "../Numeros.astro"
-import Galeria from "../Galeria.astro"
 
+const edicion = "2"
 const { currentLocale } = Astro
-// const i18n = getI18N({ currentLocale })
+const i18n = getI18N({ currentLocale })
 ---
 
-<Layout title="Archivo" description="Archivo">
+<Layout
+  title={i18n.SEO.ARCHIVO_TITLE}
+  description={i18n.SEO.ARCHIVO_DESCRIPTION}
+>
   <HeroContainer img="/archivo-background.webp">
-    <h1 class="lg:text-6xl text-4xl text-center uppercase mb-20 font-tomaso tracking-widest">
-      Ediciones anteriores
+    <h1
+      class="lg:text-6xl text-4xl text-center uppercase mb-20 font-tomaso tracking-widest"
+    >
+      {i18n.ARCHIVO.HERO_TITLE}
     </h1>
 
     <Button
-      class="animate-fade-up"
+      class="animate-fade-up uppercase"
       url="https://www.youtube.com/watch?v=1YmpPrqKP-g"
     >
-      REVIVE LA ÚLTIMA GALA
+      {i18n.ARCHIVO.HERO_BUTTON}
     </Button>
   </HeroContainer>
-  <main>
-    <Galeria edicion="1" />
-    <Numeros />
+
+  <main class="pb-24">
+    <Palmares edicion={edicion} />
+    <Galeria i18n={i18n} edicion="1" />
+    <Numeros i18n={i18n} />
   </main>
 </Layout>
